@@ -1,2 +1,4 @@
 node_modules
 .DS_Store
+server/productFiles/products.csv
+report*
