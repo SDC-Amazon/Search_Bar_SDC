@@ -9,6 +9,7 @@
     "moment": "^2.24.0",
     "mongoose": "^5.7.5",
     "nodemon": "^1.19.3",
+    "pg": "^7.12.1",
     "react": "^16.10.2",
     "react-countdown": "^2.0.0",
     "react-countdown-now": "^2.1.1",
@@ -29,7 +30,8 @@
     "start-server": "nodemon server/server.js --watch",
     "build": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-webpack": "webpack -d --watch"
+    "start-webpack": "webpack -d --watch",
+    "server:dev": "nodemon server/sdcServer.js"
   },
   "keywords": [],
   "author": "",
