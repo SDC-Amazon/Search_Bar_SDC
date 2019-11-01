@@ -1,5 +1,5 @@
-const { getAllProducts, getProducts } = require('./postgresDB');
-// const { getAllProducts, getProducts } = require('./mongoDB');
+// const { getAllProducts, getProducts } = require('./postgresDB');
+const { getAllProducts, getProducts } = require('./mongoDB');
 const express = require('express');
 const path = require('path');
 
@@ -25,8 +25,8 @@ app.get('/search/:searchString', (req, res) => {
     if(err){
       throw err
     }else{
-      console.log(results.rows.length)
-      res.send(results.rows);
+      console.log(results.length)
+      res.send(results);
     }
   })
 })
