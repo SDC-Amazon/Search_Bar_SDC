@@ -12,29 +12,33 @@ const csvWriter = createCsvWriter({
   ]
 });
 const writeEm = () => {
+  console.log('Writing file...')
   csvWriter.writeRecords(data)
-  .then(()=> console.log('----CSV WRITTEN----'))
-  .catch((err)=> console.log(err));
+    .then(()=> console.log('----CSV WRITTEN----'))
+    .catch((err)=> console.log(err));
 }
 
 const data =[];
+const totalRecords = 10000000;
 
 const million = () => {
-  for(let i = 1; i <= 10000000; i++){
+  for(let i = 1; i <= totalRecords; i++){
     let product = {
       id: i,
       name: faker.commerce.productName(),
       description: faker.lorem.sentences(3),
     }
     data.push(product);
-    if(i === 10000000){
-      writeEm();
-    }else if(i % 100000 === 0){
-      console.log(`${i} records created...`)
+    if(i % 500000 === 0){
+      let loading = '';
+      let fill = (i / 100000) / 5;
+      for(let j = 0; j < fill; j++){ loading +=  '#' }
+      while(loading.length < 20){ loading += '-' }
+      console.log(`Creating records... [${loading}]  ${fill*5}%`)
+      if(i === 10000000){
+        writeEm();
+      }
     }
   }
 }
 million();
-
-
-// Write 10 files and then export ONE file from the table later
