@@ -18,7 +18,8 @@
     "react-countdown": "^2.0.0",
     "react-countdown-now": "^2.1.1",
     "react-dom": "^16.10.2",
-    "react-moment": "^0.9.6"
+    "react-moment": "^0.9.6",
+    "newrelic": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
@@ -35,7 +36,7 @@
     "build": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-webpack": "webpack -d --watch",
-    "server:dev": "nodemon server/sdcServer.js",
+    "server:dev": "nodemon server/server.js",
     "gen": "node --max-old-space-size=6000 server/productFiles/productGenerator.js"
   },
   "keywords": [],

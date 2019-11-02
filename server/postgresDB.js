@@ -34,7 +34,6 @@ const getProducts = async (searchString, callback) => {
   }
 }
 
-
 const getAllProducts = async (callback) => {
   console.log('Querying ALL from postgres db...')
   let query = `SELECT * FROM products;`;
@@ -44,6 +43,17 @@ const getAllProducts = async (callback) => {
     .catch((err) => callback(err, null))
 }
 
+const getOne = async (productName, callback) => {
+  let nameQuery = `SELECT * FROM products WHERE name LIKE '%${productName}%'`
+  const limit = 10;
+  try {
+    const products = await client.query(`${nameQuery} LIMIT ${limit}`);
+    callback(null, products.rows);
+  }catch(e){
+    callback(e, null)
+  }
+}
 
+module.exports.getOne = getOne;
 module.exports.getProducts = getProducts;
 module.exports.getAllProducts = getAllProducts;

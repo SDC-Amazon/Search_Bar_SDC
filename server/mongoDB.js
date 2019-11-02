@@ -44,5 +44,14 @@ const getAllProducts = async (callback) => {
   }
 }
 
+const getOne = async (productName, callback) => {
+  try{
+    let product = await Products.find({name: productName}).limit(10);
+    callback(null, product)
+  }catch(e){
+    callback(e, null);
+  }
+}
+module.exports.getOne = getOne;
 module.exports.getProducts = getProducts;
 module.exports.getAllProducts = getAllProducts;
