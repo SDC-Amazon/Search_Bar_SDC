@@ -21,7 +21,7 @@ const Products = mongoose.model('Products',
         'products');
 
 const getProducts = async (searchString, callback) => {
-  console.log(`Searching mongo for ${searchString}`);
+  console.log(`Searching mongo for ${searchString}...`);
   const nameParam = {name: new RegExp(searchString, 'i')};
   const descParam = {description: new RegExp(searchString, 'i')};
   try {
@@ -35,7 +35,7 @@ const getProducts = async (searchString, callback) => {
 }
 
 const getAllProducts = async (callback) => {
-  console.log('....Finding All.....')
+  console.log('Searching mongo for ALL documents...')
   try{
     let products = await Products.find({}).limit(15);
     callback(null, products);

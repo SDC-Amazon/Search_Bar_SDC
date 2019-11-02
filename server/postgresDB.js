@@ -19,14 +19,10 @@ client.connect()
  */
 const getProducts = async (searchString, callback) => {
   console.log(`Querying postgres for '${searchString}'...`);
-  // const query = (Number(searchString) < 10000000 || Number(searchString) >= 0) ? 
-  //     `SELECT * FROM products WHERE id = ${searchString}` :
-  //     `SELECT * FROM products WHERE name LIKE '%${searchString}%'`;
-
   let nameQuery = `SELECT * FROM products WHERE name LIKE '%${searchString}%'`
   let descQuery = `SELECT * FROM products WHERE description LIKE '%${searchString}%'`
-
   const limit = 10;
+
   try {
     const nameProducts = await client.query(`${nameQuery} LIMIT ${limit}`);
     const descProducts = await client.query(`${descQuery} LIMIT ${limit}`);
@@ -40,7 +36,7 @@ const getProducts = async (searchString, callback) => {
 
 
 const getAllProducts = async (callback) => {
-  console.log('querying ALL db...')
+  console.log('Querying ALL from postgres db...')
   let query = `SELECT * FROM products;`;
   await client
     .query(query)
