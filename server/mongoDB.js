@@ -21,10 +21,13 @@ const Products = mongoose.model('Products',
         'products');
 
 const getProducts = async (searchString, callback) => {
-  console.log(`Searching for ${searchString}`);
-  const param = {name: new RegExp(searchString, 'i')};
+  console.log(`Searching mongo for ${searchString}`);
+  const nameParam = {name: new RegExp(searchString, 'i')};
+  const descParam = {description: new RegExp(searchString, 'i')};
   try {
-    let products = await Products.find(param).limit(15);
+    const nameProducts = await Products.find(nameParam).limit(10);
+    const descProducts = await Products.find(descParam).limit(10);
+    const products = nameProducts.concat(descProducts);
     callback(null, products);
   }catch(e){
     callback(e, null);

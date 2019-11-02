@@ -18,15 +18,24 @@ client.connect()
  *  that contain the input string in the name
  */
 const getProducts = async (searchString, callback) => {
-  console.log(`querying for product ${searchString}...`);
-  const query = (Number(searchString) < 10000000 || Number(searchString) >= 0) ? 
-      `SELECT * FROM products WHERE id = ${searchString}` :
-      `SELECT * FROM products WHERE name LIKE '%${searchString}%'`;
+  console.log(`Querying postgres for '${searchString}'...`);
+  // const query = (Number(searchString) < 10000000 || Number(searchString) >= 0) ? 
+  //     `SELECT * FROM products WHERE id = ${searchString}` :
+  //     `SELECT * FROM products WHERE name LIKE '%${searchString}%'`;
+
+  let nameQuery = `SELECT * FROM products WHERE name LIKE '%${searchString}%'`
+  let descQuery = `SELECT * FROM products WHERE description LIKE '%${searchString}%'`
+
   const limit = 10;
-  await client
-    .query(`${query} LIMIT ${limit}`)
-    .then((results) => callback(null, results))
-    .catch((err) => callback(err, null))
+  try {
+    const nameProducts = await client.query(`${nameQuery} LIMIT ${limit}`);
+    const descProducts = await client.query(`${descQuery} LIMIT ${limit}`);
+    const products = nameProducts.rows.concat(descProducts.rows);
+    console.log(nameProducts.rows.length, descProducts.rows.length, products.length);
+    callback(null, products);
+  }catch(e){
+    callback(e, null)
+  }
 }
 
 

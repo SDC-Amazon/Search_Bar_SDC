@@ -25,7 +25,7 @@ app.get('/search/:searchString', (req, res) => {
     if(err){
       throw err
     }else{
-      console.log(results.length)
+      console.log(results.length, 'products found')
       res.send(results);
     }
   })
