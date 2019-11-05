@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { Products, seedDatabase } = require('./mongoSchema');
 
 // Connect database
 let port = 'localhost'
@@ -14,11 +14,9 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log(`mongo database connected!`)
+  seedDatabase();
 })
-// connect to the pre-existing collection
-const Products = mongoose.model('Products',
-        new Schema({id: Number, name: String, description: String}),
-        'products');
+
 
 const getProducts = async (searchString, callback) => {
   console.log(`Searching mongo for ${searchString}...`);
@@ -35,7 +33,6 @@ const getProducts = async (searchString, callback) => {
 }
 
 const getAllProducts = async (callback) => {
-  // console.log('Searching mongo for ALL documents...')
   try{
     let products = await Products.find({}).limit(10);
     callback(null, products);

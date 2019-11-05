@@ -38,7 +38,7 @@
     "start-webpack": "webpack -d --watch",
     "server:dev": "nodemon server/server.js",
     "gen": "node --max-old-space-size=6000 server/productGenerator.js",
-    "barrage": "artillery quick --count 1000 -n 100 http://localhost:3000/id"
+    "barrage": "artillery quick --count 1000 -n 1000 http://localhost:3000/faker"
   },
   "keywords": [],
   "author": "",

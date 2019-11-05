@@ -1,8 +1,8 @@
 // This might do something I'm not sure
 require('newrelic');
 const faker = require('faker');
-const { getAllProducts, getProducts, getProductById, getOne } = require('./postgresDB');
-// const { getAllProducts, getProducts, getOne, getProductById } = require('./mongoDB');
+// const { getAllProducts, getProducts, getProductById, getOne } = require('./postgres/postgresDB');
+const { getAllProducts, getProducts, getOne, getProductById } = require('./mongo/mongoDB');
 const express = require('express');
 const path = require('path');
 
@@ -14,12 +14,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.get('/all', (req, res) => {
-  console.time('all')
+  // console.time('all')
   getAllProducts((err, results) => {
     if(err){
       throw err;
     }else{
-      console.timeEnd('all')
+      // console.timeEnd('all')
       res.send(results);
     }
   })
@@ -27,25 +27,24 @@ app.get('/all', (req, res) => {
 
 app.get('/search/:searchString', (req, res) => {
   console.log('search')
-  console.time('search input')
+  // console.time('search input')
   getProducts(req.params.searchString, (err, results) => {
     if(err){
       throw err
     }else{
-      console.timeEnd('search input')
+      // console.timeEnd('search input')
       res.send(results);
     }
   })
 })
 
-app.get('/one', (req, res) => {
-  console.time('name')
+app.get('/name', (req, res) => {
+  // console.time('name')
   getOne(faker.commerce.productName(), (err, results) => {
     if(err){
       throw err
     }else{
-      console.timeEnd('name')
-      // console.log(results);
+      // console.timeEnd('name')
       res.send(results);
     }
   })
@@ -57,12 +56,12 @@ app.get('/faker', (req, res) => {
 
 app.get('/id', (req, res) => {
   const randomId = Math.floor(Math.random() * 10e6);
-  console.time('id')
+  // console.time('id')
   getProductById(randomId, (err, results) => {
     if(err){
       throw err
     }else{
-      console.timeEnd('id')
+      // console.timeEnd('id')
       res.send(results);
     }
   })

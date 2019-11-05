@@ -35,7 +35,6 @@ const getProducts = async (searchString, callback) => {
 }
 
 const getAllProducts = async (callback) => {
-  console.log('Querying ALL from postgres db...')
   let query = `SELECT * FROM products`;
   const limit = 10;
   await client
@@ -45,7 +44,7 @@ const getAllProducts = async (callback) => {
 }
 
 const getOne = async (productName, callback) => {
-  let nameQuery = `SELECT * FROM products WHERE name LIKE '%${productName}%'`
+  let nameQuery = `SELECT * FROM products WHERE name='${productName}'`
   const limit = 10;
   try {
     const products = await client.query(`${nameQuery} LIMIT ${limit}`);
@@ -56,7 +55,7 @@ const getOne = async (productName, callback) => {
 }
 
 const getProductById = async (productId, callback) => {
-  let query = `SELECT * FROM products WHERE id = ${productId}`;
+  let query = `SELECT * FROM products WHERE _id = ${productId}`;
   try {
     const product = await client.query(query);
     callback(null, product.rows);
