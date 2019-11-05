@@ -2,8 +2,8 @@ config:
   target: 'http://localhost:3000'
   phases:
     - duration: 100
-      arrivalRate: 1000
+      arrivalRate: 50
 scenarios:
   - flow:
     - get:
-        url: "/search"
+        url: "/one"

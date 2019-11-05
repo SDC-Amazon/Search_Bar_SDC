@@ -36,9 +36,10 @@ const getProducts = async (searchString, callback) => {
 
 const getAllProducts = async (callback) => {
   console.log('Querying ALL from postgres db...')
-  let query = `SELECT * FROM products;`;
+  let query = `SELECT * FROM products`;
+  const limit = 10;
   await client
-    .query(query)
+    .query(`${query} LIMIT ${limit}`)
     .then((results) => callback(null, results))
     .catch((err) => callback(err, null))
 }
@@ -54,6 +55,17 @@ const getOne = async (productName, callback) => {
   }
 }
 
+const getProductById = async (productId, callback) => {
+  let query = `SELECT * FROM products WHERE id = ${productId}`;
+  try {
+    const product = await client.query(query);
+    callback(null, product.rows);
+  }catch(e){
+    callback(e, null);
+  }
+}
+
 module.exports.getOne = getOne;
 module.exports.getProducts = getProducts;
+module.exports.getProductById = getProductById;
 module.exports.getAllProducts = getAllProducts;

@@ -22,22 +22,22 @@ const Products = mongoose.model('Products',
 
 const getProducts = async (searchString, callback) => {
   console.log(`Searching mongo for ${searchString}...`);
-  const nameParam = {name: new RegExp(searchString, 'i')};
-  const descParam = {description: new RegExp(searchString, 'i')};
+  // const nameParam = {name: new RegExp(searchString, 'i')};
+  const descParam = {description: searchString};
   try {
-    const nameProducts = await Products.find(nameParam).limit(10);
-    const descProducts = await Products.find(descParam).limit(10);
-    const products = nameProducts.concat(descProducts);
-    callback(null, products);
+    // const nameProducts = await Products.find(nameParam).limit(10);
+    const descProducts = await Products.find({description: searchString}).limit(10);
+    // const products = nameProducts.concat(descProducts);
+    callback(null, descProducts.rows);
   }catch(e){
     callback(e, null);
   }
 }
 
 const getAllProducts = async (callback) => {
-  console.log('Searching mongo for ALL documents...')
+  // console.log('Searching mongo for ALL documents...')
   try{
-    let products = await Products.find({}).limit(15);
+    let products = await Products.find({}).limit(10);
     callback(null, products);
   }catch(e){
     callback(e, null);
@@ -52,6 +52,18 @@ const getOne = async (productName, callback) => {
     callback(e, null);
   }
 }
+
+const getProductById = async (productId, callback) => {
+  try{
+    let product = await Products.findOne({id: productId});
+    callback(null, product);
+  }catch(e){
+    callback(e, null);
+  }
+}
 module.exports.getOne = getOne;
 module.exports.getProducts = getProducts;
+module.exports.getProductById = getProductById;
 module.exports.getAllProducts = getAllProducts;
+
+// mongoimport -d products -c products --type CSV --file products.csv --headerline

@@ -37,7 +37,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-webpack": "webpack -d --watch",
     "server:dev": "nodemon server/server.js",
-    "gen": "node --max-old-space-size=6000 server/productFiles/productGenerator.js"
+    "gen": "node --max-old-space-size=6000 server/productGenerator.js",
+    "barrage": "artillery quick --count 1000 -n 100 http://localhost:3000/id"
   },
   "keywords": [],
   "author": "",

@@ -1,6 +1,6 @@
 node_modules
 .DS_Store
-server/productFiles/products.csv
+products.csv
 report*
 newrelic.js
 newrelic_agent.log
