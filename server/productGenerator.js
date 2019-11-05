@@ -1,8 +1,9 @@
 const fs = require('fs');
 const faker = require('faker');
-
-const generateRecords = (postgres, mongo) => {  
-  const totalRecords = 10e4;
+const { Products } = require('./mongo/mongoDB');
+const postgres = false;
+// const generateRecords = (postgres, mongo) => {  
+  const totalRecords = 10e6;
   const data = [];
   if(postgres){
     const writer = fs.createWriteStream('products.csv');
@@ -43,9 +44,14 @@ const generateRecords = (postgres, mongo) => {
     writer.end(); 
     console.log('-----CSV WRITTEN-----');
   }else{
-    return data;
+    console.log('...Inserting to Mongo...')
+    console.time('insert');
+    Products.insertMany(data)
+      .then(()=>console.timeEnd('insert'))
+      .catch(()=>console.log('Error inserting to Mongo'));
   }
   
-}
+// }
+// generateRecords(false, true);
 
-module.exports.generateRecords = generateRecords
+// module.exports.generateRecords = generateRecords

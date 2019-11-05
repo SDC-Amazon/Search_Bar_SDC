@@ -26,13 +26,13 @@ app.get('/all', (req, res) => {
 })
 
 app.get('/search/:searchString', (req, res) => {
-  console.log('search')
-  // console.time('search input')
+  console.time('search input')
   getProducts(req.params.searchString, (err, results) => {
     if(err){
       throw err
     }else{
-      // console.timeEnd('search input')
+      console.log(results);
+      console.timeEnd('search input')
       res.send(results);
     }
   })
@@ -40,7 +40,7 @@ app.get('/search/:searchString', (req, res) => {
 
 app.get('/name', (req, res) => {
   // console.time('name')
-  getOne(faker.commerce.productName(), (err, results) => {
+  getOne('nothings', (err, results) => {
     if(err){
       throw err
     }else{
@@ -56,12 +56,10 @@ app.get('/faker', (req, res) => {
 
 app.get('/id', (req, res) => {
   const randomId = Math.floor(Math.random() * 10e6);
-  // console.time('id')
   getProductById(randomId, (err, results) => {
     if(err){
       throw err
     }else{
-      // console.timeEnd('id')
       res.send(results);
     }
   })

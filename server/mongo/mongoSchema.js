@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { generateRecords } = require('../productGenerator');
+
 
 const productsSchema = new mongoose.Schema({
   _id: Number,

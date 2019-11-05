@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Products, seedDatabase } = require('./mongoSchema');
+const { Products } = require('./mongoSchema');
 
 // Connect database
 let port = 'localhost'
@@ -14,7 +14,6 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log(`mongo database connected!`)
-  seedDatabase();
 })
 
 
@@ -23,10 +22,8 @@ const getProducts = async (searchString, callback) => {
   // const nameParam = {name: new RegExp(searchString, 'i')};
   const descParam = {description: searchString};
   try {
-    // const nameProducts = await Products.find(nameParam).limit(10);
-    const descProducts = await Products.find({description: searchString}).limit(10);
-    // const products = nameProducts.concat(descProducts);
-    callback(null, descProducts.rows);
+    const descProducts = await Products.find({ $text: { $search: searchString}}).limit(10);
+    callback(null, descProducts);
   }catch(e){
     callback(e, null);
   }
@@ -43,7 +40,7 @@ const getAllProducts = async (callback) => {
 
 const getOne = async (productName, callback) => {
   try{
-    let product = await Products.find({name: productName}).limit(10);
+    let product = await Products.find({ $text: { $search: productName}}).limit(10);
     callback(null, product)
   }catch(e){
     callback(e, null);
@@ -52,12 +49,13 @@ const getOne = async (productName, callback) => {
 
 const getProductById = async (productId, callback) => {
   try{
-    let product = await Products.findOne({id: productId});
+    let product = await Products.findOne({_id: productId});
     callback(null, product);
   }catch(e){
     callback(e, null);
   }
 }
+
 module.exports.getOne = getOne;
 module.exports.getProducts = getProducts;
 module.exports.getProductById = getProductById;
