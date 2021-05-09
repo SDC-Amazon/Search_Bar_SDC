@@ -1,63 +1,83 @@
+// This might do something I'm not sure
+require('newrelic');
+const faker = require('faker');
+// const { getAllProducts, getProducts, getProductById, getOne } = require('./postgres/postgresDB');
+const { getAllProducts, getProducts, getOne, getProductById } = require('./mongo/mongoDB');
 const express = require('express');
-const app = express();
 const path = require('path');
-const db = require('./db.js')
-const cors = require('cors');
 
+const app = express();
+const port = 3000;
 
 app.use(express.static(path.join(__dirname + '/../dist/')));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(cors());
 
-app.get('/getData/:itemId', (request, response) => {
-    console.log("server /getData itemId = ", request.params.itemId);
-    db.getProductData((err, results) => {
-        if (err) {
-            console.log('GETPRODUCTDATAERROR: ', err);
-        }
-        else {
-            response.send(results);
-            console.log('sending data from server');
-        }
-        response.end();
-    },request.params.itemId)
+app.get('/all', (req, res) => {
+  // console.time('all')
+  getAllProducts((err, results) => {
+    if(err){
+      throw err;
+    }else{
+      // console.timeEnd('all')
+      res.send(results);
+    }
+  })
 })
 
-app.get('/search/:searchString', (request, response) => {
-    db.searchProducts((err, results) => {
-        if (err) {
-            console.log('/search ERROR: ', err);
-        }
-        else {
-            response.send(results);
-            console.log('sending data from server');
-        }
-        response.end();
-    }, request.params.searchString)
+app.get('/search/:searchString', (req, res) => {
+  console.time('search input')
+  getProducts(req.params.searchString, (err, results) => {
+    if(err){
+      throw err
+    }else{
+      console.log(results);
+      console.timeEnd('search input')
+      res.send(results);
+    }
+  })
 })
 
-app.post('/addToCart', (request, response) => {
-    db.addToCart((err, results) => {
-        if (err) {
-            console.log('addToCartERROR: ', err);
-        } else {
-            response.send(results);
-            console.log('addToCart Success');
-        }
-        response.end();
-    }, request.body.productNum, request.body.qtyToAdd)
+app.get('/name', (req, res) => {
+  // console.time('name')
+  getOne('nothings', (err, results) => {
+    if(err){
+      throw err
+    }else{
+      // console.timeEnd('name')
+      res.send(results);
+    }
+  })
 })
 
-app.get('/cartCount', (request, response) => {
-    console.log("server cartCount endpoint hit")
-    db.getCartCount((err, results) => {
-        if (err) {
-            console.log("cartCount server side error: ", err)
-        } else {
-            response.send(results);
-        }
-    });
+app.get('/faker', (req, res) => {
+  res.send(faker.lorem.sentence());
 })
 
-app.listen(3003, () => console.log("personal server running on port 3003"));
+app.get('/id', (req, res) => {
+  const randomId = Math.floor(Math.random() * 10e6);
+  getProductById(randomId, (err, results) => {
+    if(err){
+      throw err
+    }else{
+      res.send(results);
+    }
+  })
+})
+
+app.get('/description', (req, res) => {
+  console.time()
+  getProducts(faker.lorem.sentences(3), (err, results) => {
+    if(err){
+      throw err
+    }else{
+      console.timeEnd()
+      console.log(results);
+      res.send(results);
+    }
+  })
+})
+
+app.listen(port, ()=> {
+  console.log(`Listening on port ${port}...`);
+})
